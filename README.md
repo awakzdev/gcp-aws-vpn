@@ -5,16 +5,6 @@
 
 ![overview](https://user-images.githubusercontent.com/96201125/206707945-25bb4014-150e-4364-a61f-115a0fb234ed.svg)
 
-**Architecture overview**
-
-```
-HA VPN Gateway: Google-managed VPN gateway running on Google Cloud. Each HA VPN gateway is a regional resource that has two interfaces, each with its own external IP addresses: interface 0 and 1.
- 
-VPN tunnels: Connect the HA VPN gateway to the peer VPN gateway and serve as virtual tunnels through which encrypted traffic passes.
-
-Peer VPN gateway: Two AWS Site-to-Site VPN endpoints, which can be from an AWS virtual private gateway or AWS transit gateway.
-```
-
 Objectives
 ---
 * Create a VPC network on Google Cloud.
