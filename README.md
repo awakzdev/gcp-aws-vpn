@@ -8,8 +8,6 @@
 **Architecture overview**
 
 ```
-Cloud Router: Fully distributed and managed Google Cloud service to provide dynamic routing using BGP for your VPC networks.
-
 HA VPN Gateway: Google-managed VPN gateway running on Google Cloud. Each HA VPN gateway is a regional resource that has two interfaces, each with its own external IP addresses: interface 0 and 1.
  
 VPN tunnels: Connect the HA VPN gateway to the peer VPN gateway and serve as virtual tunnels through which encrypted traffic passes.
@@ -20,11 +18,13 @@ Peer VPN gateway: Two AWS Site-to-Site VPN endpoints, which can be from an AWS v
 Objectives
 ---
 * Create a VPC network on Google Cloud.
-* Create an HA VPN gateway and Cloud Router on Google Cloud.
+* Create an HA VPN gateway on Google Cloud.
 * Create customer gateways on AWS.
 * Create a VPN connection with dynamic routing on AWS.
 * Create an external VPN gateway and VPN tunnels on Google Cloud.
 * Verify and test the VPN connection between VPC networks on Google Cloud and AWS.
+
+**At the end of this you'll be able to ping each VM's private IP address from both Cloud providers.**
 
 
 **Costs**
