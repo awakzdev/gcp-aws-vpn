@@ -142,9 +142,9 @@ resource "google_compute_vpn_tunnel" "vpn-2" {
 
 // Provision a GCP Route - Tunnel1
 resource "google_compute_route" "route1" {
-  name       = "route1"
+  name       = "aws-route-tunnel1"
   network    = google_compute_network.vpn.name
-  dest_range = "10.0.0.0/16"
+  dest_range = aws_vpc.network.cidr_block
   priority   = 1000
 
   next_hop_vpn_tunnel = google_compute_vpn_tunnel.vpn-1.id
@@ -152,9 +152,9 @@ resource "google_compute_route" "route1" {
 
 // Provision a GCP Route - Tunnel2
 resource "google_compute_route" "route2" {
-  name       = "route2"
+  name       = "aws-route-tunnel2"
   network    = google_compute_network.vpn.name
-  dest_range = "10.0.0.0/16"
+  dest_range = aws_vpc.network.cidr_block
   priority   = 1000
 
   next_hop_vpn_tunnel = google_compute_vpn_tunnel.vpn-2.id
@@ -168,7 +168,7 @@ resource "google_compute_route" "route2" {
 
 // Provisions a VPC
 resource "aws_vpc" "network" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.aws_vpc_cidr
 
   tags = {
     Name = "vpn-vpc"
@@ -178,7 +178,7 @@ resource "aws_vpc" "network" {
 // Provisions a Subnet - Receives a Public IP on launch
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.network.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = aws_vpc.network.cidr_block
   map_public_ip_on_launch = true
 
   tags = {
@@ -207,7 +207,7 @@ resource "aws_route_table" "rt" {
   # Routing GCP VPC CIDR to VPN Gateway
   route {
     gateway_id = aws_vpn_gateway.vpn_gw.id
-    cidr_block = "10.156.0.0/20" // "10.156.0.0/20" - Default VPC CIDR for 'europe-west3'
+    cidr_block = var.subnet_europe_west3 // "10.156.0.0/20" - Default VPC CIDR for 'europe-west3'
     # For more on VPC CIDR visit the link
     # https://console.cloud.google.com/networking/networks/details/default?{YOUR-PROJECT-NAME-HERE}&pageTab=SUBNETS // Change {YOUR-PROJECT-NAME-HERE}
   }
@@ -265,7 +265,7 @@ resource "aws_vpn_connection" "main" {
 // Provides a static route between a VPN connection and a customer gateway.
 resource "aws_vpn_connection_route" "main" {
   vpn_connection_id      = aws_vpn_connection.main.id
-  destination_cidr_block = "10.156.0.0/20" // "10.156.0.0/20" - Default VPC CIDR for 'europe-west3' & For more on Subnet CIDR visit the link
+  destination_cidr_block = var.subnet_europe_west3 // "10.156.0.0/20" - Default VPC CIDR for 'europe-west3' & For more on Subnet CIDR visit the link
   # https://console.cloud.google.com/networking/networks/details/default?{YOUR-PROJECT-NAME-HERE}&pageTab=SUBNETS // Change {YOUR-PROJECT-NAME-HERE}
 }
 
@@ -289,7 +289,7 @@ resource "aws_security_group" "gcp" {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["10.156.0.0/20"] // 'europe-west3' GCP Region
+    cidr_blocks = [var.subnet_europe_west3] // 'europe-west3' GCP Region
   }
 
   // External Communication
