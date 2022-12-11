@@ -24,9 +24,6 @@ Objectives
 * Create an external VPN gateway and VPN tunnels on Google Cloud.
 * Verify and test the VPN connection between VPC networks on Google Cloud and AWS.
 
-**At the end of this you'll be able to ping each VM's private IP address from both Cloud providers.**
-
-
 **Costs**
 ---
 This infrastructure uses billable components of Google Cloud, including the following:
