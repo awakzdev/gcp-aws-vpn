@@ -1,7 +1,7 @@
 ﻿### This will create highly available VPN connections between Google Cloud and Amazon Web Services (AWS) for direct communication between VPC networks across the two cloud platforms.
 ---
 
-**Please note regions might not match the diagram shown below but the architecture behind stands.**
+###### Default region has been changed to eu-central-1 on AWS & europe-west3 on GCP (frankfurt).
 
 ![overview](https://user-images.githubusercontent.com/96201125/206707945-25bb4014-150e-4364-a61f-115a0fb234ed.svg)
 
